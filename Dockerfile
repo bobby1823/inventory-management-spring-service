@@ -14,7 +14,7 @@ RUN ["mvn","package","-DskipTests"]
 
 #COPY ${WAR_FILE} inventory.war
 
-FROM tomcat:latest
+FROM tomcat:8.0.20-jre8
 COPY --from=build /tar/target/*.war /usr/local/tomcat/webapps/InventoryManagementSystem.war
 EXPOSE 8080
 CMD ["catalina.sh", "run"]

@@ -1,0 +1,49 @@
+version: "2.1"
+services:
+  ims-mysql:
+    image: mysql:5.7
+    container_name: ims-mysql
+  #  ports:
+  #    - "3305:3306"
+    restart: always
+    healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+        timeout: 20s
+        retries: 10
+    environment:
+      - MYSQL_ROOT_PASSWORD=Welcome123
+   #   - MYSQL_DATABASE=ims
+    networks:
+      - backend_ims-network 
+    volumes:
+      - db:/var/lib/mysql
+
+  inventory-service:
+    image: sayanta/inventory-service:latest
+    container_name: inventory-service
+    ports:
+      - "8075:8080"
+    depends_on:
+       ims-mysql:
+                 condition: service_healthy
+    networks:
+      - backend_ims-network
+
+  ui-service:
+    image: sayanta/inventory-ui:latest
+    container_name: ui-service
+    ports:
+      - "8076:80"
+    depends_on:
+      - ims-mysql
+      - inventory-service
+    networks:
+      - backend_ims-network
+
+networks:
+  backend_ims-network:
+      driver: bridge
+
+volumes:
+  db:
+      driver: local
