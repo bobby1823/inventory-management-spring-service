@@ -20,7 +20,7 @@
 		<jstl.version>1.2.1</jstl.version>
 		<tld.version>1.1.2</tld.version>
 		<servlets.version>3.1.0</servlets.version>
-		<jackson.version>2.5.3</jackson.version>
+		<jackson.version>2.9.10.8</jackson.version>
 
 	</properties>
 
